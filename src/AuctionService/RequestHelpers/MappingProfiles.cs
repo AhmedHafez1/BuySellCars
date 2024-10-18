@@ -1,5 +1,3 @@
-using AuctionService.DTOs;
-using AuctionService.Entities;
 using AutoMapper;
 
 namespace AuctionService.RequestHelpers;
