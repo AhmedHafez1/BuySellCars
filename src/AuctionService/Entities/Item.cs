@@ -12,5 +12,5 @@ public class Item
 
     // Nav Props
     public Auction Auction { get; set; } = default!;
-    public int AuctionId { get; set; }
+    public Guid AuctionId { get; set; }
 }
