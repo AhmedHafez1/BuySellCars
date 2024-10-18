@@ -3,13 +3,6 @@
 version: '3.4'
 
 services:
-  auctionservice:
-    image: auctionservice
-    build:
-      context: .
-      dockerfile: src/AuctionService/Dockerfile
-    ports:
-      - 7001:7001
   postgres:
     image: postgres
     environment:
