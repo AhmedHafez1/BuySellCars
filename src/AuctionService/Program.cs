@@ -22,4 +22,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+try
+{
+    await app.InitDb();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex);
+}
+
 app.Run();
