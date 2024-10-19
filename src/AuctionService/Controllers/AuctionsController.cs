@@ -64,5 +64,50 @@ namespace AuctionService.Controllers
                 _mapper.Map<AuctionDto>(auction)
             );
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAuction(Guid id, UpdateAuctionDto auctionDto)
+        {
+            var auction = await _context
+                .Auctions.Include(a => a.Item)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            // TODO: check the current user is the seller
+            if (auction is null)
+                return BadRequest();
+
+            auction.Item.Make = auctionDto.Make ?? auction.Item.Make;
+            auction.Item.Model = auctionDto.Model ?? auction.Item.Model;
+            auction.Item.Color = auctionDto.Color ?? auction.Item.Color;
+            auction.Item.Mileage = auctionDto.Mileage ?? auction.Item.Mileage;
+            auction.Item.Year = auctionDto.Year ?? auction.Item.Year;
+
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (!result)
+                return BadRequest("Couldn't save changes");
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAuction(Guid id)
+        {
+            var auction = await _context.Auctions.FindAsync(id);
+
+            // TODO: check the current user is the seller
+
+            if (auction is null)
+                return BadRequest();
+
+            _context.Auctions.Remove(auction);
+
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (!result)
+                return BadRequest("Couldn't save changes");
+
+            return Ok();
+        }
     }
 }
