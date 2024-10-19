@@ -11,8 +11,4 @@
     <PackageReference Include="MongoDB.Entities" Version="23.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
