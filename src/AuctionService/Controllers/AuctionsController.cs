@@ -21,12 +21,24 @@ namespace AuctionService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions()
+        public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string? dateString)
         {
-            var auctions = await _context
-                .Auctions.Include(a => a.Item)
-                .OrderBy(a => a.Item.Make)
-                .ToListAsync();
+            var query = _context.Auctions.Include(a => a.Item).AsQueryable();
+
+            // Filter by date
+            if (!string.IsNullOrEmpty(dateString))
+            {
+                if (DateTime.TryParse(dateString, out var date))
+                {
+                    query = query.Where(x => x.UpdatedAt > date);
+                }
+                else
+                {
+                    return BadRequest("Date is not valid!");
+                }
+            }
+
+            var auctions = await query.OrderBy(a => a.Item.Make).ToListAsync();
 
             return _mapper.Map<List<AuctionDto>>(auctions);
         }
