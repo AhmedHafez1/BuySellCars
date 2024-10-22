@@ -34,6 +34,9 @@ public static class DbInitializer
         var items = await http.GetItemsForSearchDb();
 
         if (items?.Count > 0)
+        {
+            Console.WriteLine(items.Count + " returned from the auction service");
             await DB.SaveAsync(items);
+        }
     }
 }

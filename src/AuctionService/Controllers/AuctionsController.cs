@@ -30,6 +30,11 @@ namespace AuctionService.Controllers
             {
                 if (DateTime.TryParse(dateString, out var date))
                 {
+                    // Convert the date to UTC if necessary
+                    if (date.Kind == DateTimeKind.Local)
+                    {
+                        date = date.ToUniversalTime();
+                    }
                     query = query.Where(x => x.UpdatedAt > date);
                 }
                 else
