@@ -78,14 +78,13 @@ namespace AuctionService.Controllers
 
             _context.Auctions.Add(auction);
 
+            var auctionCreated = _mapper.Map<AuctionCreated>(auction);
+            await _publishEndpoint.Publish(auctionCreated);
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if (!result)
                 return BadRequest("Couldn't save changes");
-
-            var auctionCreated = _mapper.Map<AuctionCreated>(auction);
-
-            await _publishEndpoint.Publish(auctionCreated);
 
             return CreatedAtAction(
                 nameof(GetAuctionById),
