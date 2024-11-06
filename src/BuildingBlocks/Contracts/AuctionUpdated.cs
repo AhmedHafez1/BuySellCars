@@ -1,5 +1,3 @@
-using System;
-
 namespace BuildingBlocks.Contracts;
 
 public class AuctionUpdated

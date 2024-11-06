@@ -78,6 +78,7 @@ namespace AuctionService.Controllers
 
             _context.Auctions.Add(auction);
 
+            // Send message to message broker
             var auctionCreated = _mapper.Map<AuctionCreated>(auction);
             await _publishEndpoint.Publish(auctionCreated);
 
@@ -110,6 +111,10 @@ namespace AuctionService.Controllers
             auction.Item.Mileage = auctionDto.Mileage ?? auction.Item.Mileage;
             auction.Item.Year = auctionDto.Year ?? auction.Item.Year;
 
+            // Send message to message broker
+            var updatedAuction = _mapper.Map<AuctionUpdated>(auction);
+            await _publishEndpoint.Publish(updatedAuction);
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if (!result)
@@ -129,6 +134,10 @@ namespace AuctionService.Controllers
                 return BadRequest();
 
             _context.Auctions.Remove(auction);
+
+            // Send message to message broker
+            var deletedAuction = new AuctionDeleted { Id = id.ToString() };
+            await _publishEndpoint.Publish(deletedAuction);
 
             var result = await _context.SaveChangesAsync() > 0;
 
