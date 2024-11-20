@@ -23,7 +23,7 @@ builder.Services.AddMassTransit(x =>
                 "search-auction-created",
                 endpointNameFormatter =>
                 {
-                    endpointNameFormatter.UseMessageRetry(r => r.Interval(5, 5));
+                    endpointNameFormatter.UseMessageRetry(r => r.Interval(7, 7));
                     endpointNameFormatter.ConfigureConsumer<AuctionCreatedConsumer>(context);
                 }
             );

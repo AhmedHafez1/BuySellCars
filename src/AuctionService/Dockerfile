@@ -1,29 +1,26 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
-WORKDIR /app
-EXPOSE 8080
-
+# Use the official .NET SDK image to build and publish the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-COPY BuySellCars.sln BuySellCars.sln
-COPY src/AuctionService/AuctionService.csproj src/AuctionService/AuctionService.csproj
-COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/BuildingBlocks.csproj
-COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.csproj
-COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
-COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
-
-RUN dotnet restore BuySellCars.sln
-
-COPY src/AuctionService src/AuctionService
-COPY src/BuildingBlocks src/BuildingBlocks
-WORKDIR /app/src/AuctionService
-RUN dotnet build "./AuctionService.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./AuctionService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Copy the main microservice project files
+COPY src/AuctionService/AuctionService.csproj src/AuctionService/
+# Copy the library project files
+COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/
+
+# Restore dependencies for all projects
+RUN dotnet restore src/AuctionService/AuctionService.csproj
+
+# Copy the remaining source code into the container
+COPY . .
+
+# Build and publish the application
+WORKDIR /app/src/AuctionService
+RUN dotnet publish -c Release -o /app/publish
+
+# Use the runtime-only image to run the application
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# Specify the entry point for the application
 ENTRYPOINT ["dotnet", "AuctionService.dll"]
