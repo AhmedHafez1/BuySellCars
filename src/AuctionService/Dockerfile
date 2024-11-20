@@ -5,12 +5,18 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["src/AuctionService/AuctionService.csproj", "src/AuctionService/"]
-COPY ["src/BuildingBlocks/BuildingBlocks.csproj", "src/BuildingBlocks/"]
-RUN dotnet restore "./src/AuctionService/AuctionService.csproj"
-COPY . .
-WORKDIR "/src/src/AuctionService"
+COPY BuySellCars.sln BuySellCars.sln
+COPY src/AuctionService/AuctionService.csproj src/AuctionService/AuctionService.csproj
+COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/BuildingBlocks.csproj
+COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.csproj
+COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
+COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
+
+RUN dotnet restore BuySellCars.sln
+
+COPY src/AuctionService src/AuctionService
+COPY src/BuildingBlocks src/BuildingBlocks
+WORKDIR /app/src/AuctionService
 RUN dotnet build "./AuctionService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
