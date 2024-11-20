@@ -5,15 +5,17 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{51FD4BE8-9F28-4E8C-8B41-EC51F010EE50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionService", "src\AuctionService\AuctionService.csproj", "{F3879DE2-BD92-4CBE-B36F-D95A73925B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionService", "src\AuctionService\AuctionService.csproj", "{F3879DE2-BD92-4CBE-B36F-D95A73925B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService", "src\SearchService\SearchService.csproj", "{07464332-CB5B-4869-BE6B-FBB683B9EE1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchService", "src\SearchService\SearchService.csproj", "{07464332-CB5B-4869-BE6B-FBB683B9EE1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "src\BuildingBlocks\BuildingBlocks.csproj", "{66141C4B-756B-41E6-B8B7-C7147E1D5A3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "src\BuildingBlocks\BuildingBlocks.csproj", "{66141C4B-756B-41E6-B8B7-C7147E1D5A3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "src\IdentityService\IdentityService.csproj", "{F9EE84EE-06E2-4483-9122-A86E93D51521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityService", "src\IdentityService\IdentityService.csproj", "{F9EE84EE-06E2-4483-9122-A86E93D51521}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "src\GatewayService\GatewayService.csproj", "{ED4E462B-F18D-4FD3-8265-9AE3C75953E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService", "src\GatewayService\GatewayService.csproj", "{ED4E462B-F18D-4FD3-8265-9AE3C75953E9}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7EA34820-6931-4EC9-BE40-4E1A9BDA6F5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{ED4E462B-F18D-4FD3-8265-9AE3C75953E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED4E462B-F18D-4FD3-8265-9AE3C75953E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED4E462B-F18D-4FD3-8265-9AE3C75953E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EA34820-6931-4EC9-BE40-4E1A9BDA6F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EA34820-6931-4EC9-BE40-4E1A9BDA6F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EA34820-6931-4EC9-BE40-4E1A9BDA6F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EA34820-6931-4EC9-BE40-4E1A9BDA6F5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
