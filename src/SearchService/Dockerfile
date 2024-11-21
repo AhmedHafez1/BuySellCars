@@ -1,25 +1,26 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
+# Use the official .NET SDK image to build and publish the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["src/SearchService/SearchService.csproj", "src/SearchService/"]
-COPY ["src/BuildingBlocks/BuildingBlocks.csproj", "src/BuildingBlocks/"]
-RUN dotnet restore "./src/SearchService/SearchService.csproj"
+# Copy the main microservice project files
+COPY src/SearchService/SearchService.csproj src/SearchService/
+# Copy the library project files
+COPY src/BuildingBlocks/BuildingBlocks.csproj src/BuildingBlocks/
+
+# Restore dependencies for all projects
+RUN dotnet restore src/SearchService/SearchService.csproj
+
+# Copy the remaining source code into the container
 COPY . .
-WORKDIR "/src/src/SearchService"
-RUN dotnet build "./SearchService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./SearchService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Build and publish the application
+WORKDIR /app/src/SearchService
+RUN dotnet publish -c Release -o /app/publish
 
-FROM base AS final
+# Use the runtime-only image to run the application
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=base /app/publish .
+
+# Specify the entry point for the application
 ENTRYPOINT ["dotnet", "SearchService.dll"]
